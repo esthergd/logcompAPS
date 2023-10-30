@@ -1,7 +1,10 @@
-# logcompAPS - LINGUAGEM DE PROGRAMAÇÃO RELACIONADA À NUTRIÇÃO
+# APS de Lógica da Computação
 
 
-## EBNF
+## LINGUAGEM DE PROGRAMAÇÃO RELACIONADA À NUTRIÇÃO
+
+
+### EBNF
 
 
 ```
