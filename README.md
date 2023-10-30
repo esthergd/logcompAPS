@@ -1,7 +1,7 @@
 # APS de Lógica da Computação
 
 
-## LINGUAGEM DE PROGRAMAÇÃO RELACIONADA À NUTRIÇÃO
+## Linguagem de Programação relacionada à nutrição
 
 
 ### EBNF
