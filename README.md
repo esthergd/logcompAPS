@@ -21,7 +21,7 @@ ATTRIBUTION = IDENTIFIER '=' EXPRESSION';' .
 
 EXPRESSION = TERM{ OPERATOR } .
 TERM = IDENTIFIER | NUMBER | SEARCH | '(' EXPRESSION')' .
-Operador = '+' | '-' | '*' | '/' | '==' | '!=' | '<' | '<=' | '>' | '>=' .
+OPERTATOR = '+' | '-' | '*' | '/' | '==' | '!=' | '<' | '<=' | '>' | '>=' .
 
 AMOUNT = NUMBER
 NUMBER = [0-9] { [0-9] | '.' } .
