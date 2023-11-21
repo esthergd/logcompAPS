@@ -46,8 +46,8 @@
 ">"             { printf("Token Identified: GREATER\n"); return GREATER; }
 ">="            { printf("Token Identified: GREATEREQUAL\n");return GREATEREQUAL; }
 
-[0-9]+                       { printf("Token Identified: NUMBER\n", yytext); return NUMBER; }
-[a-zA-Z][a-zA-Z0-9_]*        { printf("Token Identified: IDENTIFIER\n", yytext); return IDENTIFIER; }
+[0-9]+                       { printf("Token Identified: NUMBER %s\n", yytext); return NUMBER; }
+[a-zA-Z][a-zA-Z0-9_]*        { printf("Token Identified: IDENTIFIER %s\n", yytext); return IDENTIFIER; }
 
 [ \t\n]         { /* Ignorar espaços em branco */ }
 

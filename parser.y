@@ -1,9 +1,16 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+
+extern int yylex();
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Parser error: %s\n", s);
+}
+
 %}
 
-%token FOOD MEAL SEARCH PRINT IF FOR WHILE ATTRIBUTION
+%token FOOD MEAL SEARCH PRINT IF ELSE FOR WHILE ATTRIBUTION
 %token CARB PROTEIN FAT FIBER VITAMIN MINERAL
 %token CALORIES PROTEINS CARBS FATS FIBERS VITAMINS MINERALS
 %token NUMBER IDENTIFIER
@@ -19,11 +26,11 @@ program:
     ;
 
 command:
-      FOOD IDENTIFIER '=' NUMBER 'g' 'de' FOOD ';'
+      FOOD IDENTIFIER '=' NUMBER FOOD ';'
     | MEAL IDENTIFIER '=' identifier_list ';'
-    | SEARCH SEARCHTYPE '(' identifier_opt ')' ';'
+    | SEARCH '(' identifier_opt ')' ';'
     | PRINT '(' ')' ';'
-    | IF '(' expression ')' '{' program '}' else_opt
+    | IF '(' expression ')' '{' program '}' ELSE
     | FOR '(' expression ')' '{' program '}'
     | WHILE '(' expression ')' '{' program '}'
     | ATTRIBUTION IDENTIFIER '=' expression ';'
