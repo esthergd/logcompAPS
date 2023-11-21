@@ -962,12 +962,12 @@ YY_RULE_SETUP
 case 35:
 YY_RULE_SETUP
 #line 49 "tokenizer.l"
-{ printf("Token Identified: NUMBER\n", yytext); return NUMBER; }
+{ printf("Token Identified: NUMBER %s\n", yytext); return NUMBER; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 50 "tokenizer.l"
-{ printf("Token Identified: IDENTIFIER\n", yytext); return IDENTIFIER; }
+{ printf("Token Identified: IDENTIFIER %s\n", yytext); return IDENTIFIER; }
 	YY_BREAK
 case 37:
 /* rule 37 can match eol */
