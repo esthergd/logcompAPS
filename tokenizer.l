@@ -17,7 +17,6 @@
 "ELSE"          { printf("Token Identified: ELSE\n"); return ELSE; }
 "FOR"           { printf("Token Identified: FOR\n"); return FOR; }
 "WHILE"         { printf("Token Identified: WHILE\n"); return WHILE; }
-"ATTRIBUTION"   { printf("Token Identified: ATTRIBUTION\n"); return ATTRIBUTION; }
 "CARB"          { printf("Token Identified: CARB\n"); return CARB; }
 "PROTEIN"       { printf("Token Identified: PROTEIN\n"); return PROTEIN; }
 "FAT"           { printf("Token Identified: FAT\n"); return FAT; }
