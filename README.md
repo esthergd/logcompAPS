@@ -1,35 +1,33 @@
 # APS de Lógica da Computação
 
 
-## Linguagem de Programação relacionada à nutrição
+## Linguagem de Programação - Go em português
 
 
 ### EBNF
 
 
 ```
-PROGRAM = { COMMAND } .
-COMMAND = FOOD | MEAL | SEARCH | PRINT | IF | FOR | WHILE | ATTRIBUTION
-FOOD = 'FOOD' IDENTIFIER '=' AMOUNT 'g' 'de' FOOD';' .
-MEAL = 'MEAL' IDENTIFIER'=' { IDENTIFIER } ';' .
-SEARCH = 'SEARCH' SEARCHTYPE'(' [ IDENTIFIER] ')' ';' .
-PRINT = 'PRINT' '('')' ';' .
-IF = 'IF' '(' EXPRESSION ')' '{' PROGRAM'}' [ 'ELSE' '{' PROGRAM'}' ]
-FOR = 'FOR' '(' EXPRESSION ')' '{' PROGRAM '}'
-WHILE= 'WHILE' '(' EXPRESSION')' '{' PROGRAM'}' .
-ATTRIBUTION = IDENTIFIER '=' EXPRESSION';' .
-
-EXPRESSION = TERM{ OPERATOR } .
-TERM = IDENTIFIER | NUMBER | SEARCH | '(' EXPRESSION')' .
-OPERTATOR = '+' | '-' | '*' | '/' | '==' | '!=' | '<' | '<=' | '>' | '>=' .
-
-AMOUNT = NUMBER
-NUMBER = [0-9] { [0-9] | '.' } .
-INDENTIFIER = LETTER { LETTER | DIGIT | '_' } .
-LETTER = 'A' | 'B' | ... | 'Z' | 'a' | 'b' | ... | 'z' .
-DIGIT = '0' | '1' | ... | '9' .
-
-FOOD = 'CARB' | 'PROTEIN' | 'FAT' | 'FIBER' | 'VITAMIN' | 'MINERAL' .
-SEARCHTYPE = 'CALORIES' | 'PROTEINS' | 'CARBS' | 'FATS' | 'FIBERS' | 'VITAMINS' | 'MINERALS' .
-
+PROGRAM = { DECLARATION } ;
+DECLARATION = "função", IDENTIFIER, "(", { IDENTIFIER, ( "inteiro" | "string" ), [ "," ] }, ")", ( "inteiro" | "string" ), BLOCK, "\n" ;
+BLOCK = "{", "\n", { STATEMENT }, "}" ;
+STATEMENT = ( λ | ASSIGN | PRINT | IF | FOR | VAR | RETURN ), "\n" ;
+ASSIGN = IDENTIFIER, ( ( "=", BOOLEAN EXPRESSION ) | ( "(", { BOOLEAN EXPRESSION, [ "," ] }, ")" ) ) ;
+PRINT = "Imprime", "(", BOOLEAN EXPRESSION, ")" ;
+IF = "se", BOOLEAN EXPRESSION, BLOCK, { "senão", BLOCK } ;
+FOR = "para", ASSIGN, ";", BOOLEAN EXPRESSION, ";", ASSIGN, BLOCK ;
+VAR = "var", IDENTIFIER, ( "int" | "string" ), ( λ | "=", BOOLEAN EXPRESSION ) ;
+RETURN = "retorna", BOOLEAN EXPRESSION ;
+BOOLEAN EXPRESSION = BOOLEAN TERM, { "||" BOOLEAN TERM } ;
+BOOLEAN TERM = RELATIONAL EXPRESSION, { "&&", RELATIONAL EXPRESSION } ;
+RELATIONAL EXPRESSION = EXPRESSION, { ("==" | ">" | "<"), EXPRESSION } ;
+EXPRESSION = TERM, { ("+" | "-" | "." ), TERM } ;
+TERM = FACTOR, { ("*" | "/"), FACTOR } ;
+FACTOR = NUMBER | STRING | IDENTIFIER ["(", { BOOLEAN EXPRESSION, [ "," ] }, ")" ] | (("+" | "-" | "!"), FACTOR) | "(", BOOLEAN EXPRESSION, ")" | SCAN ;
+SCAN = "Escaneia", "(", ")" ;
+IDENTIFIER = LETTER, { LETTER | DIGIT | "_" } ;
+NUMBER = DIGIT, { DIGIT } ;
+STRING = ( " | ' ), { λ | LETTER | DIGIT }, ( " | ' ) ;
+LETTER = ( a | ... | z | A | ... | Z ) ;
+DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 ```
