@@ -42,7 +42,9 @@ python3 main.py exemplo.txt
 
 ### Gerando o executável
 flex tokenizer.l
+
 bison -d parser.y
+
 gcc -o analyzer parser.tab.c lex.yy.c -lfl
 
 ### Rodando o executável com um arquivo teste
