@@ -1,4 +1,3 @@
-
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,54 +8,94 @@ void yyerror(const char *s) { fprintf(stderr, "Erro de análise: %s\n", s); }
 
 %token FUNCAO INTEIRO STRING IMPRIME SE SENAO PARA VAR RETORNA LE EPAREN DPAREN EBRACE DBRACE
 %token PONTO_VIRGULA VIRGULA IGUAL IGUAL_IGUAL MAIOR MENOR OU E SOMA SUB CONCAT MULT DIV NEG NUMERO ID
-
+%token QUEBRA_LINHA TIPO
 %%
 
 programa:
-          /* vazio */
+        /* vazio */
         | declaracao
         ;
 
 declaracao:
-          VAR ID tipo IGUAL expressao 
-        | FUNCAO ID EPAREN lista_parametros DPAREN tipo EBRACE programa DBRACE
-        | RETORNA ID
-        | IMPRIME expressao
-        | SE EPAREN expressao DPAREN EBRACE programa DBRACE
-        | SE EPAREN expressao DPAREN EBRACE programa DBRACE SENAO EBRACE programa DBRACE
-        | PARA expressao PONTO_VIRGULA expressao PONTO_VIRGULA expressao EBRACE programa DBRACE
-        | expressao
+        FUNCAO ID EPAREN lista_parametros DPAREN TIPO bloco QUEBRA_LINHA
         ;
+
+lista_parametros: 
+        /* vazio */
+        | ID TIPO
+        | ID TIPO PONTO_VIRGULA lista_parametros
+        ;
+
+bloco:
+        EBRACE QUEBRA_LINHA afirmacao DBRACE
+        ;
+
+afirmacao:
+        opcao_afirmacao QUEBRA_LINHA
+        ;
+
+opcao_afirmacao:
+        /* vazio */
+        | VAR ID TIPO 
+        | VAR ID TIPO IGUAL expressao_booleana
+        | IMPRIME EPAREN expressao_booleana DPAREN
+        | SE expressao_booleana bloco
+        | SE expressao_booleana bloco SENAO bloco
+        | PARA atribuicao PONTO_VIRGULA expressao_booleana PONTO_VIRGULA atribuicao bloco
+        | RETORNA expressao_booleana
+        | atribuicao
+        ;
+
+atribuicao:
+        ID IGUAL expressao_booleana
+        | ID EPAREN argumentos_atribuicao DPAREN 
+        ;
+
+argumentos_atribuicao:
+        /* vazio */
+        | expressao_booleana
+        | expressao_booleana VIRGULA argumentos_atribuicao
+        ;
+
+expressao_booleana:
+        termo_booleano
+        | termo_booleano OU expressao_booleana
+        ;
+
+termo_booleano:
+        expressao_relacional
+        | expressao_relacional E termo_booleano
+        ;
+
+expressao_relacional:
+        expressao
+        | expressao IGUAL_IGUAL expressao_relacional
+        | expressao MAIOR expressao_relacional
+        | expressao MENOR expressao_relacional
 
 expressao:
-          expressao SOMA expressao
-        | expressao SUB expressao
-        | expressao MULT expressao
-        | expressao DIV expressao
-        | expressao MAIOR expressao
-        | expressao MENOR expressao
-        | VAR ID tipo IGUAL NUMERO
-        | ID IGUAL ID SOMA NUMERO EBRACE
-        | ID IGUAL ID MULT NUMERO 
-        | ID
-        | NUMERO
-        | STRING
-        | EPAREN expressao DPAREN
+        termo
+        | termo SOMA expressao
+        | termo SUB expressao
+        | termo CONCAT expressao
         ;
 
+termo:
+        fator
+        | fator MULT termo
+        | fator DIV termo
+        ;
 
-lista_parametros: /* vazio */
-            | lista_parametros VIRGULA parametro
-            | parametro
-            ;
-
-parametro: ID tipo
-     ;
-
-tipo:
-    |INTEIRO
-    |STRING
-    ;
+fator:
+        NUMERO
+        | ID
+        | ID EPAREN argumentos_atribuicao DPAREN
+        | SUB fator
+        | SOMA fator
+        | NEG fator
+        | EPAREN expressao_booleana DPAREN
+        | LE EPAREN DPAREN
+        ;
 
 %%
 

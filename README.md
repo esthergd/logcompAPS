@@ -1,8 +1,9 @@
 # APS de Lógica da Computação
 
 
-## Linguagem de Programação - Go em português
+## PortuGo - Go em português
 
+Trazendo maior acessibilidade para o mundo da programação, a linguagem PortuGo surge como uma ponte entre a expressividade da língua portuguesa e a eficiência do desenvolvimento de software.
 
 ### EBNF
 
@@ -31,3 +32,17 @@ STRING = ( " | ' ), { λ | LETRA | DÍGITO }, ( " | ' ) ;
 LETRA = ( a | ... | z | A | ... | Z ) ;
 DÍGITO = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 ```
+
+
+### Rodando o compilador
+
+python3 main.py exemplo.txt
+
+
+### Gerando o executável
+flex tokenizer.l
+bison -d parser.y
+gcc -o analyzer parser.tab.c lex.yy.c -lfl
+
+# Rodando o executável com um arquivo teste
+./analyzer < {arquivo-teste}

@@ -278,7 +278,7 @@ class Tokenizer:
                 self.next = Token("INT", int(number))
 
             elif self.source[self.position] == "*":
-                self.next = Token("TIMES", "*")
+                self.next = Token("MULT", "*")
                 self.position += 1
             
             elif self.source[self.position] == "/":
@@ -286,71 +286,71 @@ class Tokenizer:
                 self.position += 1
 
             elif self.source[self.position] == "+":
-                self.next = Token("PLUS", "+")
+                self.next = Token("SOMA", "+")
                 self.position += 1
             
             elif self.source[self.position] == "-":
-                self.next = Token("MINUS", "-")
+                self.next = Token("SUB", "-")
                 self.position += 1
             
             elif self.source[self.position] == "(":
-                self.next = Token("LPAREN", "(")
+                self.next = Token("EPAREN", "(")
                 self.position += 1
             
             elif self.source[self.position] == ")":
-                self.next = Token("RPAREN", ")")
+                self.next = Token("DPAREN", ")")
                 self.position += 1
             
             elif self.source[self.position] == "\n":
-                self.next = Token("NEWLINE", "\n")
+                self.next = Token("QUEBRA_LINHA", "\n")
                 self.position += 1
             
             elif self.source[self.position] == "=":
                 if self.source[self.position + 1] == "=":
-                    self.next = Token("EQUAL_EQUAL", "==")
+                    self.next = Token("IGUAL_IGUAL", "==")
                     self.position += 2
                 else:
-                    self.next = Token("EQUAL", "=")
+                    self.next = Token("IGUAL", "=")
                     self.position += 1
             
             #dnd, or, maior, menor, not, ;, {, }
             
             elif self.source[self.position] == "&":
                 if self.source[self.position + 1] == "&":
-                    self.next = Token("AND", "&")
+                    self.next = Token("E", "&")
                     self.position += 2
                 else:
                     raise TypeError("Erro")
             
             elif self.source[self.position] == "|":
                 if self.source[self.position + 1] == "|":
-                    self.next = Token("OR", "|")
+                    self.next = Token("OU", "|")
                     self.position += 2
                 else:
                     raise TypeError("Erro")
 
             elif self.source[self.position] == ">":
-                self.next = Token("GREATER", ">")
+                self.next = Token("MAIOR", ">")
                 self.position += 1
             
             elif self.source[self.position] == "<":
-                self.next = Token("LESS", "<")
+                self.next = Token("MENOR", "<")
                 self.position += 1
             
             elif self.source[self.position] == "!":
-                self.next = Token("NOT", "!")
+                self.next = Token("NEG", "!")
                 self.position += 1
             
             elif self.source[self.position] == ";":
-                self.next = Token("SEMICOLON", ";")
+                self.next = Token("PONTO_VIRGULA", ";")
                 self.position += 1
             
             elif self.source[self.position] == "{":
-                self.next = Token("LBRACE", "{")
+                self.next = Token("EBRACE", "{")
                 self.position += 1
             
             elif self.source[self.position] == "}":
-                self.next = Token("RBRACE", "}")
+                self.next = Token("DBRACE", "}")
                 self.position += 1
             
             elif self.source[self.position] == ".":
@@ -358,7 +358,7 @@ class Tokenizer:
                 self.position += 1
             
             elif self.source[self.position] == ",":
-                    self.next = Token("COMMA", self.source[self.position])
+                    self.next = Token("VIRGULA", self.source[self.position])
                     self.position += 1
             
             elif self.source[self.position] == '"': #Verifica se é string (se começa com aspas)
@@ -425,7 +425,7 @@ class Parser:
     def parse_program():
         result = Program("", [])
         while Parser.tokenizer.next.type != "EOF":
-            while Parser.tokenizer.next.type == "NEWLINE":
+            while Parser.tokenizer.next.type == "QUEBRA_LINHA":
                 Parser.tokenizer.select_next()
             if Parser.tokenizer.next.type != "EOF":
                 result.children.append(Parser.parse_declaration())
@@ -440,7 +440,7 @@ class Parser:
             if Parser.tokenizer.next.type == "ID":
                 func_name = Parser.tokenizer.next.value
                 Parser.tokenizer.select_next()
-                if Parser.tokenizer.next.type == "LPAREN":
+                if Parser.tokenizer.next.type == "EPAREN":
                     Parser.tokenizer.select_next()
                     while Parser.tokenizer.next.type == "ID":
                         variable_name = Parser.tokenizer.next.value
@@ -448,12 +448,12 @@ class Parser:
                         variable_type = Parser.tokenizer.next.value
                         Parser.tokenizer.select_next()
                         parameters.append((variable_type, variable_name))
-                        if Parser.tokenizer.next.type == "COMMA":
+                        if Parser.tokenizer.next.type == "VIRGULA":
                             Parser.tokenizer.select_next()
                         else:
                             break
 
-                    if Parser.tokenizer.next.type == "RPAREN":
+                    if Parser.tokenizer.next.type == "DPAREN":
                         Parser.tokenizer.select_next()
                         if Parser.tokenizer.next.type == "type":
                             func_type = Parser.tokenizer.next.value
@@ -464,7 +464,7 @@ class Parser:
                                     result.children.append(VarDec(parameters[i][0], [Identifier(parameters[i][1], [])]))
                             result.children.append(Parser.parse_block())
 
-                            if Parser.tokenizer.next.type == "NEWLINE":
+                            if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                                 Parser.tokenizer.select_next()
                             else:
                                 raise TypeError("Erro")
@@ -482,14 +482,14 @@ class Parser:
 
 
     def parse_block():
-        if Parser.tokenizer.next.type == "LBRACE":
+        if Parser.tokenizer.next.type == "EBRACE":
             Parser.tokenizer.select_next()
-            if Parser.tokenizer.next.type == "NEWLINE":
+            if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                 Parser.tokenizer.select_next()
                 result = Block("", [])
-                while Parser.tokenizer.next.type != "RBRACE":
+                while Parser.tokenizer.next.type != "DBRACE":
                     result.children.append(Parser.parse_statement())
-                if Parser.tokenizer.next.type == "RBRACE":
+                if Parser.tokenizer.next.type == "DBRACE":
                     Parser.tokenizer.select_next()
                     return result
                 else:
@@ -498,14 +498,14 @@ class Parser:
     def rel_expression():
         result = Parser.parse_expression()
 
-        while Parser.tokenizer.next.type == "EQUAL_EQUAL" or Parser.tokenizer.next.type == "GREATER" or Parser.tokenizer.next.type == "LESS":
-            if Parser.tokenizer.next.type == "EQUAL_EQUAL":
+        while Parser.tokenizer.next.type == "IGUAL_IGUAL" or Parser.tokenizer.next.type == "MAIOR" or Parser.tokenizer.next.type == "MENOR":
+            if Parser.tokenizer.next.type == "IGUAL_IGUAL":
                 Parser.tokenizer.select_next()
                 result = BinOp("==", [result, Parser.parse_expression()])
-            elif Parser.tokenizer.next.type == "GREATER":
+            elif Parser.tokenizer.next.type == "MAIOR":
                 Parser.tokenizer.select_next()
                 result = BinOp(">", [result, Parser.parse_expression()])
-            elif Parser.tokenizer.next.type == "LESS":
+            elif Parser.tokenizer.next.type == "MENOR":
                 Parser.tokenizer.select_next()
                 result = BinOp("<", [result, Parser.parse_expression()])
         
@@ -514,7 +514,7 @@ class Parser:
     def bool_term():
         result = Parser.rel_expression()
 
-        while Parser.tokenizer.next.type == "AND":
+        while Parser.tokenizer.next.type == "E":
             Parser.tokenizer.select_next()
             result = BinOp("&&", [result, Parser.rel_expression()])
         
@@ -523,7 +523,7 @@ class Parser:
     def bool_expression():
         result = Parser.bool_term()
 
-        while Parser.tokenizer.next.type == "OR":
+        while Parser.tokenizer.next.type == "OU":
             Parser.tokenizer.select_next()
             result = BinOp("||", [result, Parser.bool_term()])
         
@@ -534,22 +534,22 @@ class Parser:
             id = Parser.tokenizer.next.value
             id_node = Identifier(id, [])
             Parser.tokenizer.select_next()
-            if Parser.tokenizer.next.type == "EQUAL":
+            if Parser.tokenizer.next.type == "IGUAL":
                 Parser.tokenizer.select_next()
                 bool_expression = Parser.bool_expression()
                 return Assignment("=",[id_node, bool_expression])
-            if Parser.tokenizer.next.type == "LPAREN":
+            if Parser.tokenizer.next.type == "EPAREN":
                 Parser.tokenizer.select_next()
                 result = FuncCall(id_node, [])
-                while Parser.tokenizer.next.type != "RPAREN":
+                while Parser.tokenizer.next.type != "DPAREN":
                     result.children.append(Parser.bool_expression())
-                    if Parser.tokenizer.next.type == "COMMA":
+                    if Parser.tokenizer.next.type == "VIRGULA":
                         Parser.tokenizer.select_next()
                     else:
                         break
-                if Parser.tokenizer.next.type == "RPAREN":
+                if Parser.tokenizer.next.type == "DPAREN":
                     Parser.tokenizer.select_next()
-                    if Parser.tokenizer.next.type == "NEWLINE":
+                    if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                         Parser.tokenizer.select_next()
                         return result
                     else:
@@ -565,11 +565,11 @@ class Parser:
 
         result = Parser.parse_term()
 
-        while Parser.tokenizer.next.type == "PLUS" or Parser.tokenizer.next.type == "MINUS" or Parser.tokenizer.next.type == "CONCAT":
-            if Parser.tokenizer.next.type == "PLUS":
+        while Parser.tokenizer.next.type == "SOMA" or Parser.tokenizer.next.type == "SUB" or Parser.tokenizer.next.type == "CONCAT":
+            if Parser.tokenizer.next.type == "SOMA":
                 Parser.tokenizer.select_next()
                 result = BinOp("+", [result, Parser.parse_term()])
-            elif Parser.tokenizer.next.type == "MINUS":
+            elif Parser.tokenizer.next.type == "SUB":
                 Parser.tokenizer.select_next()
                 result = BinOp("-", [result, Parser.parse_term()])
             elif Parser.tokenizer.next.type == "CONCAT":
@@ -582,8 +582,8 @@ class Parser:
         
         result = Parser.parse_factor()
 
-        while Parser.tokenizer.next.type == "TIMES" or Parser.tokenizer.next.type == "DIV":
-            if Parser.tokenizer.next.type == "TIMES":
+        while Parser.tokenizer.next.type == "MULT" or Parser.tokenizer.next.type == "DIV":
+            if Parser.tokenizer.next.type == "MULT":
                 Parser.tokenizer.select_next()
                 result = BinOp("*", [result, Parser.parse_factor()])
             elif Parser.tokenizer.next.type == "DIV":
@@ -607,41 +607,41 @@ class Parser:
             Parser.tokenizer.select_next()
             return result
         
-        elif Parser.tokenizer.next.type == "PLUS":
+        elif Parser.tokenizer.next.type == "SOMA":
             Parser.tokenizer.select_next()
             result = UnOp("+", [Parser.parse_factor()])
             return result
         
-        elif Parser.tokenizer.next.type == "MINUS":
+        elif Parser.tokenizer.next.type == "SUB":
             Parser.tokenizer.select_next()
             result = UnOp("-", [Parser.parse_factor()])
             return result
         
-        elif Parser.tokenizer.next.type == "NOT":
+        elif Parser.tokenizer.next.type == "NEG":
             Parser.tokenizer.select_next()
             result = UnOp("!", [Parser.parse_factor()])
             return result
         
-        elif Parser.tokenizer.next.type == "LPAREN":
+        elif Parser.tokenizer.next.type == "EPAREN":
             Parser.tokenizer.select_next()
             result = Parser.bool_expression()
-            if Parser.tokenizer.next.type == "RPAREN":
+            if Parser.tokenizer.next.type == "DPAREN":
                 Parser.tokenizer.select_next()
                 return result
         
         elif Parser.tokenizer.next.type == "ID":
             id = Parser.tokenizer.next.value
             Parser.tokenizer.select_next()
-            if Parser.tokenizer.next.type == "LPAREN":
+            if Parser.tokenizer.next.type == "EPAREN":
                 Parser.tokenizer.select_next()
                 result = FuncCall(id, [])
-                while Parser.tokenizer.next.type != "RPAREN":
+                while Parser.tokenizer.next.type != "DPAREN":
                     result.children.append(Parser.bool_expression())
-                    if Parser.tokenizer.next.type == "COMMA":
+                    if Parser.tokenizer.next.type == "VIRGULA":
                         Parser.tokenizer.select_next()
                     else:
                         break
-                if Parser.tokenizer.next.type == "RPAREN":
+                if Parser.tokenizer.next.type == "DPAREN":
                     Parser.tokenizer.select_next()
                     return result
                 else:
@@ -652,10 +652,10 @@ class Parser:
         
         elif Parser.tokenizer.next.type == "Le":
             Parser.tokenizer.select_next()
-            if Parser.tokenizer.next.type == "LPAREN":
+            if Parser.tokenizer.next.type == "EPAREN":
                 Parser.tokenizer.select_next()
                 result = Scanln("Le", [])
-                if Parser.tokenizer.next.type == "RPAREN":
+                if Parser.tokenizer.next.type == "DPAREN":
                     Parser.tokenizer.select_next()
                     return result
                 else:
@@ -667,34 +667,34 @@ class Parser:
     
     def parse_statement():
         result = None
-        if Parser.tokenizer.next.type == "NEWLINE":
+        if Parser.tokenizer.next.type == "QUEBRA_LINHA":
             Parser.tokenizer.select_next()
             return NoOp("NoOp", [])
         
         elif Parser.tokenizer.next.type == "ID":
             ident = Identifier(Parser.tokenizer.next.value, [])
             Parser.tokenizer.select_next()
-            if Parser.tokenizer.next.type == "EQUAL":
+            if Parser.tokenizer.next.type == "IGUAL":
                 Parser.tokenizer.select_next()
                 result = Assignment("=", [ident, Parser.bool_expression()])
-                if Parser.tokenizer.next.type == "NEWLINE":
+                if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                     Parser.tokenizer.select_next()
                     return result
                 else:
                     raise TypeError("Erro")
                 
-            elif Parser.tokenizer.next.type == "LPAREN":
+            elif Parser.tokenizer.next.type == "EPAREN":
                 Parser.tokenizer.select_next()
                 result = FuncCall(ident.value, [])
-                while Parser.tokenizer.next.type != "RPAREN":
+                while Parser.tokenizer.next.type != "DPAREN":
                     result.children.append(Parser.bool_expression())
-                    if Parser.tokenizer.next.type == "COMMA":
+                    if Parser.tokenizer.next.type == "VIRGULA":
                         Parser.tokenizer.select_next()
                     else:
                         break
-                if Parser.tokenizer.next.type == "RPAREN":
+                if Parser.tokenizer.next.type == "DPAREN":
                     Parser.tokenizer.select_next()
-                    if Parser.tokenizer.next.type == "NEWLINE":
+                    if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                         Parser.tokenizer.select_next()
                         return result
                     else:
@@ -714,22 +714,22 @@ class Parser:
                 result = If("se", [condition, if_block, else_block])
             else:
                 result = If("se", [condition, if_block])
-            if Parser.tokenizer.next.type == "NEWLINE":
+            if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                 Parser.tokenizer.select_next()
                 return result
         
         elif Parser.tokenizer.next.type == "para":
             Parser.tokenizer.select_next()
             atribution = Parser.assign()
-            if Parser.tokenizer.next.type == "SEMICOLON":
+            if Parser.tokenizer.next.type == "PONTO_VIRGULA":
                 Parser.tokenizer.select_next()
                 condition = Parser.bool_expression()
-                if Parser.tokenizer.next.type == "SEMICOLON":
+                if Parser.tokenizer.next.type == "PONTO_VIRGULA":
                     Parser.tokenizer.select_next()
                     increment = Parser.assign()
                     block = Parser.parse_block()
                     result = For("para", [atribution, condition, increment, block])
-            if Parser.tokenizer.next.type == "NEWLINE":
+            if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                 Parser.tokenizer.select_next()
                 return result
             else:
@@ -744,10 +744,10 @@ class Parser:
                     type = Parser.tokenizer.next.value
                     result = VarDec(type, [ident])
                     Parser.tokenizer.select_next()
-                    if Parser.tokenizer.next.type == "EQUAL":
+                    if Parser.tokenizer.next.type == "IGUAL":
                         Parser.tokenizer.select_next()
                         result.children.append(Parser.bool_expression())
-                    if Parser.tokenizer.next.type == "NEWLINE":
+                    if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                         Parser.tokenizer.select_next()
                         return result
                     else:
@@ -757,12 +757,12 @@ class Parser:
         
         elif Parser.tokenizer.next.type == "Imprime":
             Parser.tokenizer.select_next()
-            if Parser.tokenizer.next.type == "LPAREN":
+            if Parser.tokenizer.next.type == "EPAREN":
                 Parser.tokenizer.select_next()
                 result = Print("Imprime", [Parser.bool_expression()])
-                if Parser.tokenizer.next.type == "RPAREN":
+                if Parser.tokenizer.next.type == "DPAREN":
                     Parser.tokenizer.select_next()
-                    if Parser.tokenizer.next.type == "NEWLINE":
+                    if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                         Parser.tokenizer.select_next()
                         return result
                     else:
@@ -775,7 +775,7 @@ class Parser:
         elif Parser.tokenizer.next.type == "retorna":
             Parser.tokenizer.select_next()
             resultado = Return("retorna", [Parser.bool_expression()])
-            if Parser.tokenizer.next.type == "NEWLINE":
+            if Parser.tokenizer.next.type == "QUEBRA_LINHA":
                 Parser.tokenizer.select_next()
                 return resultado
             else:
