@@ -1,7 +1,7 @@
 # APS de Lógica da Computação
 
 
-## Linguagem de Programação relacionada à nutrição
+## Linguagem de Programação - Go em português
 
 
 ### EBNF
