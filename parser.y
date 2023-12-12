@@ -1,78 +1,69 @@
+
 %{
 #include <stdio.h>
 #include <stdlib.h>
-
 extern int yylex();
-
-void yyerror(const char *s) {
-    fprintf(stderr, "Parser error: %s\n", s);
-}
-
+extern char *yytext;
+void yyerror(const char *s) { fprintf(stderr, "Erro de análise: %s\n", s); }
 %}
 
-%token FOOD MEAL SEARCH PRINT IF ELSE FOR WHILE ATTRIBUTION
-%token CARB PROTEIN FAT FIBER VITAMIN MINERAL
-%token CALORIES PROTEINS CARBS FATS FIBERS VITAMINS MINERALS
-%token NUMBER IDENTIFIER
-%token PLUS MINUS TIMES DIVIDE EQUAL NOTEQUAL LESS LESSEQUAL GREATER GREATEREQUAL
-%token LPAREN RPAREN
-
-%start program
+%token FUNCAO INTEIRO STRING IMPRIME SE SENAO PARA VAR RETORNA LE EPAREN DPAREN EBRACE DBRACE
+%token PONTO_VIRGULA VIRGULA IGUAL IGUAL_IGUAL MAIOR MENOR OU E SOMA SUB CONCAT MULT DIV NEG NUMERO ID
 
 %%
 
-program:
-    | program command
-    ;
+programa:
+          /* vazio */
+        | declaracao
+        ;
 
-command:
-      FOOD IDENTIFIER '=' NUMBER FOOD ';'
-    | MEAL IDENTIFIER '=' identifier_list ';'
-    | SEARCH '(' identifier_opt ')' ';'
-    | PRINT '(' ')' ';'
-    | IF '(' expression ')' '{' program '}' ELSE
-    | FOR '(' expression ')' '{' program '}'
-    | WHILE '(' expression ')' '{' program '}'
-    | ATTRIBUTION IDENTIFIER '=' expression ';'
-    ;
+declaracao:
+          VAR ID tipo IGUAL expressao 
+        | FUNCAO ID EPAREN lista_parametros DPAREN tipo EBRACE programa DBRACE
+        | RETORNA ID
+        | IMPRIME expressao
+        | SE EPAREN expressao DPAREN EBRACE programa DBRACE
+        | SE EPAREN expressao DPAREN EBRACE programa DBRACE SENAO EBRACE programa DBRACE
+        | PARA expressao PONTO_VIRGULA expressao PONTO_VIRGULA expressao EBRACE programa DBRACE
+        | expressao
+        ;
 
-identifier_list:
-      IDENTIFIER
-    | identifier_list IDENTIFIER
-    ;
+expressao:
+          expressao SOMA expressao
+        | expressao SUB expressao
+        | expressao MULT expressao
+        | expressao DIV expressao
+        | expressao MAIOR expressao
+        | expressao MENOR expressao
+        | VAR ID tipo IGUAL NUMERO
+        | ID IGUAL ID SOMA NUMERO EBRACE
+        | ID IGUAL ID MULT NUMERO 
+        | ID
+        | NUMERO
+        | STRING
+        | EPAREN expressao DPAREN
+        ;
 
-identifier_opt:
-    | IDENTIFIER
-    ;
 
-expression:
-      term
-    | expression operator term
-    ;
+lista_parametros: /* vazio */
+            | lista_parametros VIRGULA parametro
+            | parametro
+            ;
 
-term:
-      IDENTIFIER
-    | NUMBER
-    | SEARCH
-    | LPAREN expression RPAREN
-    ;
+parametro: ID tipo
+     ;
 
-operator:
-      PLUS
-    | MINUS
-    | TIMES
-    | DIVIDE
-    | EQUAL
-    | NOTEQUAL
-    | LESS
-    | LESSEQUAL
-    | GREATER
+tipo:
+    |INTEIRO
+    |STRING
+    ;
 
 %%
-
-/* Implement any necessary additional functions or actions */
 
 int main() {
-    yyparse();
+    if (yyparse()) {
+        fprintf(stderr, "Análise Falhou\n");
+        return 1;
+    }
     return 0;
 }

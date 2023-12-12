@@ -7,47 +7,41 @@
 #include "parser.tab.h"
 %}
 
+%option noyywrap
+
 %%
 
-"FOOD"          { printf("Token Identified: FOOD\n"); return FOOD; }
-"MEAL"          { printf("Token Identified: MEAL\n"); return MEAL; }
-"SEARCH"        { printf("Token Identified: SEARCH\n"); return SEARCH; }
-"PRINT"         { printf("Token Identified: PRINT\n"); return PRINT; }
-"IF"            { printf("Token Identified: IF\n"); return IF; }
-"ELSE"          { printf("Token Identified: ELSE\n"); return ELSE; }
-"FOR"           { printf("Token Identified: FOR\n"); return FOR; }
-"WHILE"         { printf("Token Identified: WHILE\n"); return WHILE; }
-"ATTRIBUTION"   { printf("Token Identified: ATTRIBUTION\n"); return ATTRIBUTION; }
-"CARB"          { printf("Token Identified: CARB\n"); return CARB; }
-"PROTEIN"       { printf("Token Identified: PROTEIN\n"); return PROTEIN; }
-"FAT"           { printf("Token Identified: FAT\n"); return FAT; }
-"FIBER"         { printf("Token Identified: FIBER\n"); return FIBER; }
-"VITAMIN"       { printf("Token Identified: VITAMIN\n"); return VITAMIN; }
-"MINERAL"       { printf("Token Identified: MINERAL\n"); return MINERAL; }
-"CALORIES"      { printf("Token Identified: CALORIES\n"); return CALORIES; }
-"PROTEINS"      { printf("Token Identified: PROTEINS\n"); return PROTEINS; }
-"CARBS"         { printf("Token Identified: CARBS\n"); return CARBS; }
-"FATS"          { printf("Token Identified: FATS\n"); return FATS; }
-"FIBERS"        { printf("Token Identified: FIBERS\n"); return FIBERS; }
-"VITAMINS"      { printf("Token Identified: VITAMINS\n"); return VITAMINS; }
-"MINERALS"      { printf("Token Identified: MINERALS\n"); return MINERALS; }
+"função"        { printf("Token Identified: função\n"); return FUNCAO; }
+"inteiro"       { printf("Token Identified: inteiro\n"); return INTEIRO; }
+"string"        { printf("Token Identified: string\n"); return STRING; }
+"Imprime"       { printf("Token Identified: Imprime\n"); return IMPRIME; }
+"se"            { printf("Token Identified: se\n"); return SE; }
+"senão"         { printf("Token Identified: senão\n"); return SENAO; }
+"para"          { printf("Token Identified: para\n"); return PARA; }
+"var"           { printf("Token Identified: var\n"); return VAR; }
+"retorna"       { printf("Token Identified: retorna\n"); return RETORNA; }
+"Le"            { printf("Token Identified: Le\n"); return LE; }
+"("             { printf("Token Identified: EPAREN\n"); return EPAREN; }
+")"             { printf("Token Identified: DPAREN\n"); return DPAREN; }
+"{"             { printf("Token Identified: EBRACE\n"); return EBRACE; }
+"}"             { printf("Token Identified: DBRACE\n"); return DBRACE; }
+";"             { printf("Token Identified: PONTO_VIRGULA\n"); return PONTO_VIRGULA; }
+","             { printf("Token Identified: VIRGULA\n"); return VIRGULA; }
+"="             { printf("Token Identified: IGUAL\n"); return IGUAL; }
+"=="            { printf("Token Identified: IGUAL_IGUAL\n"); return IGUAL_IGUAL; }
+">"             { printf("Token Identified: MAIOR\n"); return MAIOR; }
+"<"             { printf("Token Identified: MENOR\n"); return MENOR; }
+"||"            { printf("Token Identified: OU\n"); return OU; }
+"&&"            { printf("Token Identified: E\n"); return E; }
+"+"             { printf("Token Identified: SOMA\n");return SOMA; }
+"-"             { printf("Token Identified: SUB\n"); return SUB; }
+"."             { printf("Token Identified: CONCAT\n"); return CONCAT; }
+"*"             { printf("Token Identified: MULT\n"); return MULT; }
+"/"             { printf("Token Identified: DIV\n"); return DIV; }
+"!"             { printf("Token Identified: NEG\n"); return NEG; }
 
-"("             { printf("Token Identified: LPAREN\n"); return LPAREN; }
-")"             { printf("Token Identified: RPAREN\n"); return RPAREN; }
-
-"+"             { printf("Token Identified: PLUS\n"); return PLUS; }
-"-"             { printf("Token Identified: MINUS\n"); return MINUS; }
-"*"             { printf("Token Identified: TIMES\n"); return TIMES; }
-"/"             { printf("Token Identified: DIVIDE\n"); return DIVIDE; }
-"=="            { printf("Token Identified: EQUAL\n"); return EQUAL; }
-"!="            { printf("Token Identified: NOTEQUAL\n"); return NOTEQUAL; }
-"<"             { printf("Token Identified: LESS\n"); return LESS; }
-"<="            { printf("Token Identified: LESSEQUAL\n"); return LESSEQUAL; }
-">"             { printf("Token Identified: GREATER\n"); return GREATER; }
-">="            { printf("Token Identified: GREATEREQUAL\n");return GREATEREQUAL; }
-
-[0-9]+                       { printf("Token Identified: NUMBER %s\n", yytext); return NUMBER; }
-[a-zA-Z][a-zA-Z0-9_]*        { printf("Token Identified: IDENTIFIER %s\n", yytext); return IDENTIFIER; }
+[0-9]+                       { printf("Token Identified: NUMERO %s\n", yytext); return NUMERO; }
+[a-zA-Z][a-zA-Z0-9_]*        { printf("Token Identified: ID %s\n", yytext); return ID; }
 
 [ \t\n]         { /* Ignorar espaços em branco */ }
 

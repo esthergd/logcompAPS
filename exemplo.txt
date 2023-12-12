@@ -1,0 +1,45 @@
+
+função soma(x inteiro, y inteiro) inteiro{
+    retorna x + y
+}
+
+função le() inteiro {
+    retorna Le()
+}
+
+função concat(a string, b string) string {
+    retorna a . b
+}
+
+função main() inteiro {
+    var x1 inteiro
+    x1 = soma(le()-1, 1)
+    soma(2, 1)
+
+    Imprime(x1)
+
+    se (x1 > 1 && !!!(x1 < 1)) || x1 == 3 {
+        x1 = 2
+    } 
+
+
+    var x inteiro = 3+6/3   *  2 -+-  +  2*4/2 + 0/1 -((6+ ((4)))/(2))
+    var y1 inteiro = 3
+    y1 = soma(y1, x1)
+    var z__ inteiro
+    z__ = soma(x, y1)
+
+    se x1 == 2 {
+        x1 = 2
+    }
+
+    se x1 == 3 {
+        x1 = 2
+    } senão {
+        x1 = 3
+    }
+
+    para x1 = 0; x1 < 1 || x == 2; x1 = soma(x1, 1) {
+        Imprime(x1)
+    }
+}

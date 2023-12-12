@@ -8,28 +8,26 @@
 
 
 ```
-PROGRAM = { COMMAND } .
-COMMAND = FOOD | MEAL | SEARCH | PRINT | IF | FOR | WHILE | ATTRIBUTION
-FOOD = 'FOOD' IDENTIFIER '=' AMOUNT 'g' 'de' FOOD';' .
-MEAL = 'MEAL' IDENTIFIER'=' { IDENTIFIER } ';' .
-SEARCH = 'SEARCH' SEARCHTYPE'(' [ IDENTIFIER] ')' ';' .
-PRINT = 'PRINT' '('')' ';' .
-IF = 'IF' '(' EXPRESSION ')' '{' PROGRAM'}' [ 'ELSE' '{' PROGRAM'}' ]
-FOR = 'FOR' '(' EXPRESSION ')' '{' PROGRAM '}'
-WHILE= 'WHILE' '(' EXPRESSION')' '{' PROGRAM'}' .
-ATTRIBUTION = IDENTIFIER '=' EXPRESSION';' .
-
-EXPRESSION = TERM{ OPERATOR } .
-TERM = IDENTIFIER | NUMBER | SEARCH | '(' EXPRESSION')' .
-OPERTATOR = '+' | '-' | '*' | '/' | '==' | '!=' | '<' | '<=' | '>' | '>=' .
-
-AMOUNT = NUMBER
-NUMBER = [0-9] { [0-9] | '.' } .
-INDENTIFIER = LETTER { LETTER | DIGIT | '_' } .
-LETTER = 'A' | 'B' | ... | 'Z' | 'a' | 'b' | ... | 'z' .
-DIGIT = '0' | '1' | ... | '9' .
-
-FOOD = 'CARB' | 'PROTEIN' | 'FAT' | 'FIBER' | 'VITAMIN' | 'MINERAL' .
-SEARCHTYPE = 'CALORIES' | 'PROTEINS' | 'CARBS' | 'FATS' | 'FIBERS' | 'VITAMINS' | 'MINERALS' .
-
+PROGRAMA = { DECLARAÇÃO } ;
+DECLARAÇÃO = "função", IDENTIFICADOR, "(", { IDENTIFICADOR, ( "inteiro" | "string" ), [ "," ] }, ")", ( "inteiro" | "string" ), BLOCO, "\n" ;
+BLOCO = "{", "\n", { DECLARAÇÃO }, "}" ;
+DECLARAÇÃO = ( λ | ATRIBUIÇÃO | IMPRIME | SE | PARA | VAR | RETORNA ), "\n" ;
+ATRIBUIÇÃO = IDENTIFICADOR, ( ( "=", EXPRESSÃO BOOLEANA ) | ( "(", { EXPRESSÃO BOOLEANA, [ "," ] }, ")" ) ) ;
+IMPRIME = "Imprime", "(", EXPRESSÃO BOOLEANA, ")" ;
+SE = "se", EXPRESSÃO BOOLEANA, BLOCO, { "senão", BLOCO } ;
+PARA = "para", ATRIBUIÇÃO, ";", EXPRESSÃO BOOLEANA, ";", ATRIBUIÇÃO, BLOCO ;
+VAR = "var", IDENTIFICADOR, ( "int" | "string" ), ( λ | "=", EXPRESSÃO BOOLEANA ) ;
+RETORNA = "retorna", EXPRESSÃO BOOLEANA ;
+EXPRESSÃO BOOLEANA = TERMO BOOLEANO, { "||" TERMO BOOLEANO } ;
+TERMO BOOLEANO = EXPRESSÃO RELACIONAL, { "&&", EXPRESSÃO RELACIONAL } ;
+EXPRESSÃO RELACIONAL = EXPRESSÃO, { ("==" | ">" | "<"), EXPRESSÃO } ;
+EXPRESSÃO = TERMO, { ("+" | "-" | "." ), TERMO } ;
+TERMO = FATOR, { ("*" | "/"), FATOR } ;
+FATOR = NÚMERO | STRING | IDENTIFICADOR ["(", { EXPRESSÃO BOOLEANA, [ "," ] }, ")" ] | (("+" | "-" | "!"), FATOR) | "(", EXPRESSÃO BOOLEANA, ")" | ESCANEAR ;
+ESCANEAR = "Escaneia", "(", ")" ;
+IDENTIFICADOR = LETRA, { LETRA | DÍGITO | "_" } ;
+NÚMERO = DÍGITO, { DÍGITO } ;
+STRING = ( " | ' ), { λ | LETRA | DÍGITO }, ( " | ' ) ;
+LETRA = ( a | ... | z | A | ... | Z ) ;
+DÍGITO = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 ```
