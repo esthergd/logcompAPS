@@ -1,7 +1,8 @@
 # APS de Lógica da Computação
+## Esther Gallo Dagir
 
 
-## PortuGo - Go em português
+## PortuGo - Go em Português
 
 Trazendo maior acessibilidade para o mundo da programação, a linguagem PortuGo surge como uma ponte entre a expressividade da língua portuguesa e a eficiência do desenvolvimento de software.
 
@@ -44,5 +45,5 @@ flex tokenizer.l
 bison -d parser.y
 gcc -o analyzer parser.tab.c lex.yy.c -lfl
 
-# Rodando o executável com um arquivo teste
+### Rodando o executável com um arquivo teste
 ./analyzer < {arquivo-teste}

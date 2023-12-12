@@ -13,7 +13,8 @@ void yyerror(const char *s) { fprintf(stderr, "Erro de análise: %s\n", s); }
 
 programa:
         /* vazio */
-        | declaracao
+        | declaracao programa
+        | QUEBRA_LINHA programa
         ;
 
 declaracao:
@@ -23,12 +24,16 @@ declaracao:
 lista_parametros: 
         /* vazio */
         | ID TIPO
-        | ID TIPO PONTO_VIRGULA lista_parametros
+        | ID TIPO VIRGULA lista_parametros
         ;
 
 bloco:
-        EBRACE QUEBRA_LINHA afirmacao DBRACE
+        EBRACE QUEBRA_LINHA lista_afirmacoes DBRACE
         ;
+
+lista_afirmacoes:
+        /* vazio */
+        | afirmacao lista_afirmacoes
 
 afirmacao:
         opcao_afirmacao QUEBRA_LINHA
