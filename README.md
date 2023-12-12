@@ -46,4 +46,4 @@ bison -d parser.y
 gcc -o analyzer parser.tab.c lex.yy.c -lfl
 
 ### Rodando o executável com um arquivo teste
-./analyzer < {arquivo-teste}
+./analyzer < ../{arquivo-teste}
